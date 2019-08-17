@@ -1,1 +1,1 @@
-# HabiticaService
+# HabiticaTaskProviderService
