@@ -51,7 +51,7 @@ Task Clean -Depends Init {
 Task Init {
     $date = Get-Date
     $ticks = $date.Ticks
-    $script:imageName = "tiksn/habitica-task-provider-service"
+    $script:imageName = "tiksn/lionize-habitica-task-provider-service"
     $script:trashFolder = Join-Path -Path . -ChildPath ".trash"
     $script:trashFolder = Join-Path -Path $script:trashFolder -ChildPath $ticks.ToString("D19")
     New-Item -Path $script:trashFolder -ItemType Directory | Out-Null
