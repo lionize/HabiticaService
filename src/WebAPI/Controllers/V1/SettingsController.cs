@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace TIKSN.Lionize.WebAPI.Controllers.V1
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/{version:apiVersion}/[controller]")]
     [ApiController]
     public class SettingsController : ControllerBase
     {
