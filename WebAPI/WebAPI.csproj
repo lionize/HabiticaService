@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>TIKSN.Lionize.WebAPI</RootNamespace>
+    <AssemblyName>TIKSN.Lionize.WebAPI</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
