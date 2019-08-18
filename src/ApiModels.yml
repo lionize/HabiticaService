@@ -3,6 +3,7 @@ namespace:
   - Lionize
   - HabiticaTaskProvider
   - ApiModels
+  - V1
 models:
   - name: SettingsSetterRequest
     fields:
