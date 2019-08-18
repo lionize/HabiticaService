@@ -1,11 +1,22 @@
-Task Publish -Depends Pack, EstimateVersions {
-    Exec { docker login docker.io  --username=tiksn }
+Task Publish -Depends Pack {
+    Exec { docker login docker.io --username=tiksn }
     foreach ($VersionTag in $script:VersionTags) {
         $localTag = ($script:imageName + ":" + $VersionTag)
         $remoteTag = ("docker.io/" + $localTag)
         Exec { docker tag $localTag $remoteTag }
         Exec { docker push $remoteTag }
     }
+}
+
+Task Pack -Depends Build, EstimateVersions {
+    $src = (Resolve-Path ".\src\").Path
+    $tagsArguments = @()
+    foreach ($VersionTag in $VersionTags) {
+        $tagsArguments += "-t"
+        $tagsArguments += ($script:imageName + ":" + $VersionTag)
+    }
+
+    Exec { docker build -f Dockerfile $src $tagsArguments }
 }
 
 Task EstimateVersions {
@@ -26,11 +37,6 @@ Task EstimateVersions {
     }
 
     Assert $script:VersionTags "No version parameter (latest or specific version) is passed."
-}
-
-Task Pack -Depends Build {
-    $src = (Resolve-Path ".\src\").Path
-    Exec { docker build -f Dockerfile $src -t $script:latestImageTag }
 }
 
 Task Build -Depends TranspileModels {
