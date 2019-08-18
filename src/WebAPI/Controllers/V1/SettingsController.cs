@@ -1,42 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using Lionize.HabiticaTaskProvider.ApiModels.V1;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace TIKSN.Lionize.WebAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Route("api/{version:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize]
     public class SettingsController : ControllerBase
     {
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<SettingsGetterResponse> Get()
         {
-            return new string[] { "value1", "value2" };
+            return null;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task Put([FromBody] SettingsSetterRequest request)
         {
         }
     }
