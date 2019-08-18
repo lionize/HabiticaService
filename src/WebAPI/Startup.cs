@@ -32,7 +32,7 @@ namespace TIKSN.Lionize.WebAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("1.0", new OpenApiInfo { Title = "Lionize / Task Management Service", Version = "1.0" });
+                c.SwaggerDoc("1.0", new OpenApiInfo { Title = "Lionize / Habitica Task Provider Service", Version = "1.0" });
             });
 
             services.AddCors(options =>
