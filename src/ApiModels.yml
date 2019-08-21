@@ -13,6 +13,11 @@ models:
         type: string
   - name: SettingsGetterResponse
     fields:
+      - name: Settings
+        type: SettingsGetterItem
+        array: true
+  - name: SettingsGetterItem
+    fields:
       - name: HabiticaUserID
         type: string
 ...
