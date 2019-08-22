@@ -17,8 +17,8 @@ namespace TIKSN.Lionize.WebAPI.Controllers.V1
             return null;
         }
 
-        [HttpPut]
-        public async Task Put([FromBody] SettingsSetterRequest request)
+        [HttpPut("{id}")]
+        public async Task Put(string id, [FromBody] SettingsSetterRequest request)
         {
         }
     }
