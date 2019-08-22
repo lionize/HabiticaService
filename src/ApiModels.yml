@@ -7,6 +7,8 @@ namespace:
 models:
   - name: SettingsSetterRequest
     fields:
+      - name: ID
+        type: string
       - name: HabiticaUserID
         type: string
       - name: HabiticaApiToken
