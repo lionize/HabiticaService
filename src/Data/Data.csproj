@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>TIKSN.Lionize.Data</AssemblyName>
+    <RootNamespace>TIKSN.Lionize.Data</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TIKSN-Framework" Version="3.2.0-alpha.12" />
+  </ItemGroup>
+
+</Project>

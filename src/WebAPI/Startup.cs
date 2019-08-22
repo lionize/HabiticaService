@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace TIKSN.Lionize.WebAPI
@@ -25,30 +18,6 @@ namespace TIKSN.Lionize.WebAPI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("1.0", new OpenApiInfo { Title = "Lionize / Habitica Task Provider Service", Version = "1.0" });
-            });
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(AllowSpecificCorsOrigins,
-                cpbuilder =>
-                {
-                    var origins = Configuration.GetSection("Cors").GetSection("Origins").Get<string[]>();
-
-                    cpbuilder.AllowAnyMethod();
-                    cpbuilder.AllowAnyHeader();
-                    cpbuilder.WithOrigins(origins);
-                });
-            });
-        }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -58,7 +27,8 @@ namespace TIKSN.Lionize.WebAPI
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                // The default HSTS value is 30 days. You may want to change this for production
+                // scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -73,6 +43,36 @@ namespace TIKSN.Lionize.WebAPI
 
             app.UseHttpsRedirection();
             app.UseMvc();
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddApiVersioning();
+            services.AddVersionedApiExplorer();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("1.0", new OpenApiInfo { Title = "Lionize / Habitica Task Provider Service", Version = "1.0" });
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowSpecificCorsOrigins,
+                cpbuilder =>
+                {
+                    var origins = Configuration.GetSection("Cors").GetSection("Origins").Get<string[]>();
+
+                    if (origins != null)
+                    {
+                        cpbuilder.AllowAnyMethod();
+                        cpbuilder.AllowAnyHeader();
+                        cpbuilder.WithOrigins(origins);
+                    }
+                });
+            });
         }
     }
 }

@@ -1,0 +1,25 @@
+---
+namespace:
+  - Lionize
+  - HabiticaTaskProvider
+  - ApiModels
+  - V1
+models:
+  - name: SettingsSetterRequest
+    fields:
+      - name: HabiticaUserID
+        type: string
+      - name: HabiticaApiToken
+        type: string
+  - name: SettingsGetterResponse
+    fields:
+      - name: Settings
+        type: SettingsGetterItem
+        array: true
+  - name: SettingsGetterItem
+    fields:
+      - name: ID
+        type: string
+      - name: HabiticaUserID
+        type: string
+...
