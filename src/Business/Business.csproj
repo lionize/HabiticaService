@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RootNamespace>TIKSN.Lionize.Business</RootNamespace>
-    <AssemblyName>TIKSN.Lionize.Business</AssemblyName>
+    <RootNamespace>TIKSN.Lionize.HabiticaTaskProviderService.Business</RootNamespace>
+    <AssemblyName>TIKSN.Lionize.HabiticaTaskProviderService.Business</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="2.2.0" />
     <PackageReference Include="TIKSN-Framework" Version="3.2.0-alpha.12" />
   </ItemGroup>
 
