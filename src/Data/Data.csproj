@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>TIKSN.Lionize.Data</AssemblyName>
-    <RootNamespace>TIKSN.Lionize.Data</RootNamespace>
+    <AssemblyName>TIKSN.Lionize.HabiticaTaskProviderService.Data</AssemblyName>
+    <RootNamespace>TIKSN.Lionize.HabiticaTaskProviderService.Data</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
