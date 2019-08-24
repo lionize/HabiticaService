@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>TIKSN.Lionize.WebAPI</RootNamespace>
-    <AssemblyName>TIKSN.Lionize.WebAPI</AssemblyName>
+    <RootNamespace>TIKSN.Lionize.HabiticaTaskProviderService.WebAPI</RootNamespace>
+    <AssemblyName>TIKSN.Lionize.HabiticaTaskProviderService.WebAPI</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
