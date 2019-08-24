@@ -13,6 +13,9 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
 
             CreateMap<UserProfileSettingsEntity, UserProfileSettingsModel>()
                 .ForMember(dest => dest.HabiticaApiToken, opt => opt.MapFrom(src => protector.Unprotect(src.HabiticaApiTokenProtected)));
+
+            CreateMap<UserProfileSettingsModel, UserProfileSettingsEntity>()
+                .ForMember(dest => dest.HabiticaApiTokenProtected, opt => opt.MapFrom(src => protector.Protect(src.HabiticaApiToken)));
         }
     }
 }
