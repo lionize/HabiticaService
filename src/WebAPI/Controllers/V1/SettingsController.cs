@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace TIKSN.Lionize.WebAPI.Controllers.V1
+namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Route("api/{version:apiVersion}/[controller]")]
