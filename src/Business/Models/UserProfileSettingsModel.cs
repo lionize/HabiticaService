@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TIKSN.Lionize.Business.Models
+namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Models
 {
     internal class UserProfileSettingsModel
     {
