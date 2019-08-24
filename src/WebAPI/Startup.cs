@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace TIKSN.Lionize.WebAPI
+namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
     public class Startup
     {
