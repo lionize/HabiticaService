@@ -1,7 +1,7 @@
 ﻿using System;
 using TIKSN.Data;
 
-namespace TIKSN.Lionize.Data.Entities
+namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities
 {
     public class UserProfileSettingsEntity : IEntity<Guid>
     {
