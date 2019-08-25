@@ -1,11 +1,19 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
+using System;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business;
+using TIKSN.Lionize.HabiticaTaskProviderService.Data;
 
-namespace TIKSN.Lionize.WebAPI
+namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
     public class Startup
     {
@@ -18,7 +26,6 @@ namespace TIKSN.Lionize.WebAPI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -45,8 +52,13 @@ namespace TIKSN.Lionize.WebAPI
             app.UseMvc();
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new BusinessAutofacModule());
+            builder.RegisterModule(new DataAutofacModule());
+        }
+
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -57,6 +69,11 @@ namespace TIKSN.Lionize.WebAPI
             {
                 c.SwaggerDoc("1.0", new OpenApiInfo { Title = "Lionize / Habitica Task Provider Service", Version = "1.0" });
             });
+
+            services.AddDataProtection()
+                .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")));
+
+            services.AddAutoMapper(typeof(BusinessMappingProfile), typeof(WebApiMappingProfile));
 
             services.AddCors(options =>
             {
@@ -73,6 +90,12 @@ namespace TIKSN.Lionize.WebAPI
                     }
                 });
             });
+
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            ConfigureContainer(builder);
+
+            return new AutofacServiceProvider(builder.Build());
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using TIKSN.Data;
 
-namespace TIKSN.Lionize.Data.Entities
+namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities
 {
-    public class UserProfileSettings : IEntity<Guid>
+    public class UserProfileSettingsEntity : IEntity<Guid>
     {
         public string HabiticaApiTokenProtected { get; set; }
 
