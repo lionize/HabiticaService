@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
-using System.IO;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
@@ -63,6 +64,8 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
             services.AddDataProtection()
                 .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")));
+
+            services.AddAutoMapper(typeof(BusinessMappingProfile));
 
             services.AddCors(options =>
             {
