@@ -85,7 +85,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
                 servicesConfigurationSection.Bind(serviceDiscoveryOptions);
 
                 options.Authority = $"{serviceDiscoveryOptions.Identity.BaseAddress}";
-                options.RequireHttpsMetadata = true;
+                options.RequireHttpsMetadata = false;
 
                 options.ApiName = webApiResourceOptions.ApiName;
                 options.ApiSecret = webApiResourceOptions.ApiSecret;
