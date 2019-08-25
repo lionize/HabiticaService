@@ -7,7 +7,7 @@ using TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
 {
-    public class UserProfileSettingsService
+    public class UserProfileSettingsService : IUserProfileSettingsService
     {
         private readonly IMapper _mapper;
         private readonly IUserProfileSettingsRepository _userProfileSettingsRepository;
