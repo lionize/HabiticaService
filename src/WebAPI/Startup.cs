@@ -73,7 +73,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             services.AddDataProtection()
                 .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")));
 
-            services.AddAutoMapper(typeof(BusinessMappingProfile));
+            services.AddAutoMapper(typeof(BusinessMappingProfile), typeof(WebApiMappingProfile));
 
             services.AddCors(options =>
             {
