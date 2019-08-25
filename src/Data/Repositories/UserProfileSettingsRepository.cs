@@ -8,7 +8,7 @@ using TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories
 {
-    public class UserProfileSettingsRepository : MongoRepository<UserProfileSettingsEntity, Guid>
+    public class UserProfileSettingsRepository : MongoRepository<UserProfileSettingsEntity, Guid>, IUserProfileSettingsRepository
     {
         public UserProfileSettingsRepository(IMongoDatabaseProvider mongoDatabaseProvider) : base(mongoDatabaseProvider, "UserProfileSettings")
         {
