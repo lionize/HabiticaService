@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using System;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
+using TIKSN.Lionize.HabiticaTaskProviderService.Data;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
@@ -54,6 +55,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new BusinessAutofacModule());
+            builder.RegisterModule(new DataAutofacModule());
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
