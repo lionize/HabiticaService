@@ -18,8 +18,18 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
             _userProfileSettingsRepository = userProfileSettingsRepository ?? throw new ArgumentNullException(nameof(userProfileSettingsRepository));
         }
 
+        public async Task<UserProfileSettingsCredentialModel> GetCredentialAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var entity = await _userProfileSettingsRepository.GetAsync(id, cancellationToken);
+
+            return _mapper.Map<UserProfileSettingsCredentialModel>(entity);
+        }
+
         public async Task<IReadOnlyCollection<UserProfileSettingsRetrievalModel>> ListAsync(Guid userId, CancellationToken cancellationToken)
         {
+            var entities = await _userProfileSettingsRepository.ListAsync(userId, cancellationToken);
+
+            return _mapper.Map<UserProfileSettingsRetrievalModel[]>(entities);
         }
 
         public async Task UpdateAsync(Guid id, Guid curentUserId, UserProfileSettingsUpdateModel updateModel, CancellationToken cancellationToken)
