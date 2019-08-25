@@ -14,7 +14,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<UserProfileSettingsEntity>> ListUserSettingsAsync(Guid userId, CancellationToken cancellationToken)
+        public async Task<IReadOnlyCollection<UserProfileSettingsEntity>> ListAsync(Guid userId, CancellationToken cancellationToken)
         {
             var cursor = await collection.FindAsync(Builders<UserProfileSettingsEntity>.Filter.Eq(item => item.UserID, userId), options: null, cancellationToken);
             return await cursor.ToListAsync(cancellationToken);
