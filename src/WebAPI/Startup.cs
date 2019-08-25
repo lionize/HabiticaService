@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
+using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
@@ -65,6 +67,33 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
             services.AddApiVersioning();
             services.AddVersionedApiExplorer();
+
+            var servicesConfigurationSection = Configuration.GetSection("Services");
+            services.Configure<ServiceDiscoveryOptions>(servicesConfigurationSection);
+
+            var webApiResourceOptions = new WebApiResourceOptions();
+            Configuration.GetSection("ApiResource").Bind(webApiResourceOptions);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddIdentityServerAuthentication(options =>
+            {
+                var serviceDiscoveryOptions = new ServiceDiscoveryOptions();
+                servicesConfigurationSection.Bind(serviceDiscoveryOptions);
+
+                options.Authority = $"{serviceDiscoveryOptions.Identity.BaseAddress}";
+                options.RequireHttpsMetadata = true;
+
+                options.ApiName = webApiResourceOptions.ApiName;
+                options.ApiSecret = webApiResourceOptions.ApiSecret;
+            });
+
+            services.AddAuthorization(options =>
+            {
+            });
 
             services.AddSwaggerGen(c =>
             {
