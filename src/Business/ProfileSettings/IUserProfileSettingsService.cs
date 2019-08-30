@@ -7,8 +7,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
 {
     public interface IUserProfileSettingsService
     {
+        Task CreateAsync(Guid userId, UserProfileSettingsUpdateModel model, CancellationToken cancellationToken);
+
         Task<UserProfileSettingsCredentialModel> GetCredentialAsync(Guid id, CancellationToken cancellationToken);
+
         Task<IReadOnlyCollection<UserProfileSettingsRetrievalModel>> ListAsync(Guid userId, CancellationToken cancellationToken);
+
         Task UpdateAsync(Guid id, Guid curentUserId, UserProfileSettingsUpdateModel updateModel, CancellationToken cancellationToken);
     }
 }
