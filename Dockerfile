@@ -3,7 +3,7 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY ./ ./
-RUN dotnet restore
+RUN dotnet restore HabiticaTaskProviderService.sln
 
 # Copy everything else and build
 COPY . ./
