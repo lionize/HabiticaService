@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: WebAPI/Dockerfile
+    environment:
+      - Services__Identity__BaseAddress=http://identity
+      - ConnectionStrings__Redis=redis:6379,password=UmimfRKpdTj1VJjK
+      - ApiResource__ApiName=habitica-api
+      - ApiResource__ApiSecret=43xoIIj2QFyvFNevScaPvOFUWNQa4unVwT75TOlG5cmwFyAwcI+BFW4mpkeN52jXSAHbUya58gCTkl5K/PNyaQ==
+    networks:
+      - lionize
+
+networks:
+      lionize:
+        external:
+          name: docker-compose_lionize
