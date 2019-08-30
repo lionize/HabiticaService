@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using TIKSN.Data.Mongo;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
@@ -24,10 +25,10 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = (IConfigurationRoot)configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfigurationRoot Configuration { get; }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -61,6 +62,8 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
         {
             builder.RegisterModule(new BusinessAutofacModule());
             builder.RegisterModule(new DataAutofacModule());
+
+            builder.RegisterType<DatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -144,6 +147,8 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
                     }
                 });
             });
+
+            services.AddSingleton(Configuration);
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
