@@ -26,7 +26,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
             entity.UserID = userId;
             entity.ID = Guid.NewGuid();
 
-            await _userProfileSettingsRepository.UpdateAsync(entity, cancellationToken);
+            await _userProfileSettingsRepository.AddAsync(entity, cancellationToken);
         }
 
         public async Task<UserProfileSettingsCredentialModel> GetCredentialAsync(Guid id, CancellationToken cancellationToken)
