@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
@@ -16,6 +17,16 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userProfileSettingsRepository = userProfileSettingsRepository ?? throw new ArgumentNullException(nameof(userProfileSettingsRepository));
+        }
+
+        public async Task CreateAsync(Guid userId, UserProfileSettingsUpdateModel model, CancellationToken cancellationToken)
+        {
+            var entity = _mapper.Map<UserProfileSettingsEntity>(model);
+
+            entity.UserID = userId;
+            entity.ID = Guid.NewGuid();
+
+            await _userProfileSettingsRepository.UpdateAsync(entity, cancellationToken);
         }
 
         public async Task<UserProfileSettingsCredentialModel> GetCredentialAsync(Guid id, CancellationToken cancellationToken)
