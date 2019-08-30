@@ -9,6 +9,7 @@ services:
     environment:
       - Services__Identity__BaseAddress=http://identity
       - ConnectionStrings__Redis=redis:6379,password=UmimfRKpdTj1VJjK
+      - ConnectionStrings__Mongo=mongodb://root:Xq5xrtzEKj44ueyd@mongo:27017/HabiticaTaskProviderService?authSource=admin
       - ApiResource__ApiName=habitica-api
       - ApiResource__ApiSecret=43xoIIj2QFyvFNevScaPvOFUWNQa4unVwT75TOlG5cmwFyAwcI+BFW4mpkeN52jXSAHbUya58gCTkl5K/PNyaQ==
     networks:
