@@ -10,7 +10,7 @@
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="2.2.0" />
     <PackageReference Include="TIKSN-Framework" Version="3.2.0-alpha.13" />
-    <PackageReference Include="TIKSN-Habitica" Version="1.0.0-alpha.6" />
+    <PackageReference Include="TIKSN-Habitica" Version="1.0.0-alpha.7" />
   </ItemGroup>
 
   <ItemGroup>
