@@ -3,7 +3,7 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY ./ ./
-RUN dotnet restore
+RUN dotnet restore HabiticaTaskProviderService.sln
 
 # Copy everything else and build
 COPY . ./
@@ -13,4 +13,4 @@ RUN dotnet publish -c Release -o out WebAPI/WebAPI.csproj
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
 WORKDIR /app
 COPY --from=build-env /app/WebAPI/out .
-ENTRYPOINT ["dotnet", "TIKSN.Lionize.WebAPI.dll"]
+ENTRYPOINT ["dotnet", "TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.dll"]

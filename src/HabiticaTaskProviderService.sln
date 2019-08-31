@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{467F015B-91C6-4798-A3B7-131A7DEF80F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{7738EB6A-366A-42AA-BB71-47766251BBEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{7738EB6A-366A-42AA-BB71-47766251BBEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{867C7E70-A9BC-437B-817A-34F4A55B4AF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{867C7E70-A9BC-437B-817A-34F4A55B4AF6}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4D95E87C-32BD-4B05-85B5-0680D65A68C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,18 @@ Global
 		{867C7E70-A9BC-437B-817A-34F4A55B4AF6}.Release|x64.Build.0 = Release|Any CPU
 		{867C7E70-A9BC-437B-817A-34F4A55B4AF6}.Release|x86.ActiveCfg = Release|Any CPU
 		{867C7E70-A9BC-437B-817A-34F4A55B4AF6}.Release|x86.Build.0 = Release|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Debug|x64.Build.0 = Debug|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Debug|x86.Build.0 = Debug|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Release|x64.ActiveCfg = Release|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Release|x64.Build.0 = Release|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Release|x86.ActiveCfg = Release|Any CPU
+		{4D95E87C-32BD-4B05-85B5-0680D65A68C3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

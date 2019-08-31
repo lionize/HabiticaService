@@ -27,7 +27,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Controllers.V1
         [HttpGet]
         public async Task<SettingsGetterResponse> Get(CancellationToken cancellationToken)
         {
-            var userId = Guid.Parse(User.Identity.Name);
+            var userId = Guid.Parse(User.FindFirst("sub").Value);
             var models = await _userProfileSettingsService.ListAsync(userId, cancellationToken);
 
             return new SettingsGetterResponse
@@ -36,10 +36,20 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Controllers.V1
             };
         }
 
+        [HttpPost]
+        public async Task Post([FromBody] SettingsSetterRequest request, CancellationToken cancellationToken)
+        {
+            var userId = Guid.Parse(User.FindFirst("sub").Value);
+
+            var model = _mapper.Map<UserProfileSettingsUpdateModel>(request);
+
+            await _userProfileSettingsService.CreateAsync(userId, model, cancellationToken);
+        }
+
         [HttpPut("{id}")]
         public async Task Put(Guid id, [FromBody] SettingsSetterRequest request, CancellationToken cancellationToken)
         {
-            var userId = Guid.Parse(User.Identity.Name);
+            var userId = Guid.Parse(User.FindFirst("sub").Value);
 
             var model = _mapper.Map<UserProfileSettingsUpdateModel>(request);
 
