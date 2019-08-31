@@ -13,6 +13,7 @@ using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using TIKSN.Data.Mongo;
+using TIKSN.DependencyInjection;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
@@ -149,6 +150,9 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             });
 
             services.AddSingleton(Configuration);
+
+            services.AddFrameworkPlatform();
+            services.AddHabitica();
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
