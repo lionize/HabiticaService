@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using TIKSN.Data.Mongo;
 using TIKSN.DependencyInjection;
+using TIKSN.Habitica;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
