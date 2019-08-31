@@ -15,7 +15,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
 {
     public class PullTodosBackgroundService : BackgroundService
     {
-        private readonly IHabiticaClient _habiticaClient;
         private readonly ILogger<PullTodosBackgroundService> _logger;
         private readonly IMapper _mapper;
         private readonly IProfileTodoRepository _profileTodoRepository;
@@ -28,14 +27,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
             IUserProfileSettingsRepository userProfileSettingsRepository,
             IProfileTodoRepository profileTodoRepository,
             IUserProfileSettingsService userProfileSettingsService,
-            IHabiticaClient habiticaClient,
             IMapper mapper,
             ILogger<PullTodosBackgroundService> logger)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _userProfileSettingsRepository = userProfileSettingsRepository ?? throw new ArgumentNullException(nameof(userProfileSettingsRepository));
             _userProfileSettingsService = userProfileSettingsService ?? throw new ArgumentNullException(nameof(userProfileSettingsService));
-            _habiticaClient = habiticaClient ?? throw new ArgumentNullException(nameof(habiticaClient));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _profileTodoRepository = profileTodoRepository ?? throw new ArgumentNullException(nameof(profileTodoRepository));
@@ -54,6 +51,8 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
                 using (var scope = _serviceProvider.CreateScope())
                 using (var credentialSettings = scope.ServiceProvider.GetRequiredService<ICredentialSettingsStore>())
                 {
+                    var habiticaClient = scope.ServiceProvider.GetRequiredService<IHabiticaClient>();
+
                     foreach (var profile in profiles)
                     {
                         var credentials = await _userProfileSettingsService.GetCredentialAsync(profile.ID, stoppingToken);
@@ -63,7 +62,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
                         {
                             _logger.LogInformation($"Pull todos for profile {profile.ID}");
 
-                            await PullUserTodosAsync(profile.ID, profile.UserID, stoppingToken);
+                            await PullUserTodosAsync(habiticaClient, profile.ID, profile.UserID, stoppingToken);
                         }
                         catch (Exception ex)
                         {
@@ -78,9 +77,9 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
             await Task.Delay(TimeSpan.FromHours(1)); //TODO: Get From Configuration
         }
 
-        private async Task PullUserTodosAsync(Guid profileID, Guid userID, CancellationToken cancellationToken)
+        private async Task PullUserTodosAsync(IHabiticaClient habiticaClient, Guid profileID, Guid userID, CancellationToken cancellationToken)
         {
-            var todos = await _habiticaClient.GetUserToDosAsync(cancellationToken);
+            var todos = await habiticaClient.GetUserToDosAsync(cancellationToken);
 
             if (todos.Success)
             {
