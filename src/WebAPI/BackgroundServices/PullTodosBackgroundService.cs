@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,8 @@ using TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.Settings;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories;
+using TIKSN.Lionize.HabiticaTaskProviderService.Integration;
+using TIKSN.Lionize.HabiticaTaskProviderService.Integration.Events;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
 {
@@ -52,6 +55,8 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
                 using (var credentialSettings = scope.ServiceProvider.GetRequiredService<ICredentialSettingsStore>())
                 {
                     var habiticaClient = scope.ServiceProvider.GetRequiredService<IHabiticaClient>();
+                    var endpointAddressProvider = scope.ServiceProvider.GetRequiredService<IEndpointAddressProvider>();
+                    var sendEndpoint = await scope.ServiceProvider.GetRequiredService<ISendEndpointProvider>().GetSendEndpoint(endpointAddressProvider.GetEndpointAddress("task_upserted_queue"));
 
                     foreach (var profile in profiles)
                     {
@@ -62,7 +67,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
                         {
                             _logger.LogInformation($"Pull todos for profile {profile.ID}");
 
-                            await PullUserTodosAsync(habiticaClient, profile.ID, profile.UserID, stoppingToken);
+                            await PullUserTodosAsync(habiticaClient, profile.ID, profile.UserID, sendEndpoint, stoppingToken);
                         }
                         catch (Exception ex)
                         {
@@ -77,16 +82,16 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
             await Task.Delay(TimeSpan.FromHours(1)); //TODO: Get From Configuration
         }
 
-        private async Task PullUserTodosAsync(IHabiticaClient habiticaClient, Guid profileID, Guid userID, CancellationToken cancellationToken)
+        private async Task PullUserTodosAsync(IHabiticaClient habiticaClient, Guid profileID, Guid userID, ISendEndpoint sendEndpoint, CancellationToken cancellationToken)
         {
             var todos = await habiticaClient.GetUserToDosAsync(cancellationToken);
             var completedTodos = await habiticaClient.GetUserCompletedToDosAsync(cancellationToken);
 
-            await UpdateRecordsAsync(profileID, userID, todos, cancellationToken);
-            await UpdateRecordsAsync(profileID, userID, completedTodos, cancellationToken);
+            await UpdateRecordsAsync(profileID, userID, todos, sendEndpoint, cancellationToken);
+            await UpdateRecordsAsync(profileID, userID, completedTodos, sendEndpoint, cancellationToken);
         }
 
-        private async Task UpdateRecordsAsync(Guid profileID, Guid userID, Habitica.Models.UserTaskModel todos, CancellationToken cancellationToken)
+        private async Task UpdateRecordsAsync(Guid profileID, Guid userID, Habitica.Models.UserTaskModel todos, ISendEndpoint sendEndpoint, CancellationToken cancellationToken)
         {
             if (todos.Success)
             {
@@ -96,6 +101,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
                     entity = _mapper.Map(todo, entity);
 
                     await _profileTodoRepository.AddOrUpdateAsync(entity, cancellationToken);
+
+                    await sendEndpoint.Send<TaskUpserted>(new
+                    {
+                        Completed = entity.Completed.GetValueOrDefault(false),
+                        entity.Text
+                    });
                 }
             }
             else
