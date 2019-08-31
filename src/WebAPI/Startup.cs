@@ -61,6 +61,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new BusinessAutofacModule());
             builder.RegisterModule(new DataAutofacModule());
 
