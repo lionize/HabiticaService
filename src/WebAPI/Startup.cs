@@ -17,6 +17,7 @@ using TIKSN.DependencyInjection;
 using TIKSN.Habitica;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
+using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
@@ -152,6 +153,8 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             });
 
             services.AddSingleton(Configuration);
+
+            services.AddHostedService<PullTodosBackgroundService>();
 
             services.AddFrameworkPlatform();
             services.AddHabitica();
