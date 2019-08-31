@@ -80,7 +80,14 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
         private async Task PullUserTodosAsync(IHabiticaClient habiticaClient, Guid profileID, Guid userID, CancellationToken cancellationToken)
         {
             var todos = await habiticaClient.GetUserToDosAsync(cancellationToken);
+            var completedTodos = await habiticaClient.GetUserCompletedToDosAsync(cancellationToken);
 
+            await UpdateRecordsAsync(profileID, userID, todos, cancellationToken);
+            await UpdateRecordsAsync(profileID, userID, completedTodos, cancellationToken);
+        }
+
+        private async Task UpdateRecordsAsync(Guid profileID, Guid userID, Habitica.Models.UserTaskModel todos, CancellationToken cancellationToken)
+        {
             if (todos.Success)
             {
                 foreach (var todo in todos.Data)
