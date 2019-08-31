@@ -10,6 +10,10 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Data
             builder.RegisterType<UserProfileSettingsRepository>()
                 .As<IUserProfileSettingsRepository>()
                 .SingleInstance();
+
+            builder.RegisterType<ProfileTodoRepository>()
+                .As<IProfileTodoRepository>()
+                .SingleInstance();
         }
     }
 }
