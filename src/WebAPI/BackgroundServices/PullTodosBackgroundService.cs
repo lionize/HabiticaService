@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using TIKSN.Habitica.Rest;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.Settings;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories;
@@ -11,6 +12,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
 {
     public class PullTodosBackgroundService : BackgroundService
     {
+        private readonly IHabiticaClient _habiticaClient;
         private readonly IServiceProvider _serviceProvider;
         private readonly IUserProfileSettingsRepository _userProfileSettingsRepository;
         private readonly IUserProfileSettingsService _userProfileSettingsService;
@@ -18,11 +20,13 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
         public PullTodosBackgroundService(
             IServiceProvider serviceProvider,
             IUserProfileSettingsRepository userProfileSettingsRepository,
-            IUserProfileSettingsService userProfileSettingsService)
+            IUserProfileSettingsService userProfileSettingsService,
+            IHabiticaClient habiticaClient)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _userProfileSettingsRepository = userProfileSettingsRepository ?? throw new ArgumentNullException(nameof(userProfileSettingsRepository));
             _userProfileSettingsService = userProfileSettingsService ?? throw new ArgumentNullException(nameof(userProfileSettingsService));
+            _habiticaClient = habiticaClient ?? throw new ArgumentNullException(nameof(habiticaClient));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -42,12 +46,19 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
                         var credentials = await _userProfileSettingsService.GetCredentialAsync(profile.ID, stoppingToken);
                         credentialSettings.Store(credentials.HabiticaUserID, credentials.HabiticaApiToken);
 
+                        await PullUserTodosAsync(stoppingToken);
+
                         await Task.Delay(TimeSpan.FromSeconds(30)); //TODO: Get From Configuration
                     }
                 }
             }
 
             await Task.Delay(TimeSpan.FromHours(1)); //TODO: Get From Configuration
+        }
+
+        private async Task PullUserTodosAsync(CancellationToken cancellationToken)
+        {
+            var todos = await _habiticaClient.GetUserToDosAsync(cancellationToken);
         }
     }
 }
