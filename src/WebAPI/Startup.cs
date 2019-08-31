@@ -2,6 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using IdentityServer4.AccessTokenValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +18,7 @@ using TIKSN.DependencyInjection;
 using TIKSN.Habitica;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
+using TIKSN.Lionize.HabiticaTaskProviderService.Integration;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
 
@@ -66,6 +68,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new BusinessAutofacModule());
             builder.RegisterModule(new DataAutofacModule());
+            builder.RegisterModule(new IntegrationAutofacModule());
 
             builder.RegisterType<DatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
         }
@@ -102,6 +105,16 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
             services.AddAuthorization(options =>
             {
+            });
+
+            services.AddMassTransit(x =>
+            {
+                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
+                {
+                    var host = cfg.Host(new Uri(Configuration.GetConnectionString("RabbitMQ")), hostConfigurator =>
+                    {
+                    });
+                }));
             });
 
             services.AddSwaggerGen(c =>
