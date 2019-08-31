@@ -50,6 +50,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
             foreach (var userId in userIds)
             {
                 var profiles = await _userProfileSettingsRepository.ListAsync(userId, stoppingToken);
+
                 using (var scope = _serviceProvider.CreateScope())
                 using (var credentialSettings = scope.ServiceProvider.GetRequiredService<ICredentialSettingsStore>())
                 {
@@ -58,7 +59,16 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
                         var credentials = await _userProfileSettingsService.GetCredentialAsync(profile.ID, stoppingToken);
                         credentialSettings.Store(credentials.HabiticaUserID, credentials.HabiticaApiToken);
 
-                        await PullUserTodosAsync(profile.ID, profile.UserID, stoppingToken);
+                        try
+                        {
+                            _logger.LogInformation($"Pull todos for profile {profile.ID}");
+
+                            await PullUserTodosAsync(profile.ID, profile.UserID, stoppingToken);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, ex.Message);
+                        }
 
                         await Task.Delay(TimeSpan.FromSeconds(30)); //TODO: Get From Configuration
                     }
