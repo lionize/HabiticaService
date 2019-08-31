@@ -1,5 +1,7 @@
 ﻿using Autofac;
+using TIKSN.Habitica.Settings;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business.Settings;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
 {
@@ -10,6 +12,11 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
             builder.RegisterType<UserProfileSettingsService>()
                 .As<IUserProfileSettingsService>()
                 .SingleInstance();
+
+            builder.RegisterType<CredentialSettingsStore>()
+                .As<ICredentialSettingsStore>()
+                .As<ICredentialSettings>()
+                .InstancePerLifetimeScope();
         }
     }
 }
