@@ -10,5 +10,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories
     public interface IUserProfileSettingsRepository : IMongoRepository<UserProfileSettingsEntity, Guid>
     {
         Task<IReadOnlyCollection<UserProfileSettingsEntity>> ListAsync(Guid userId, CancellationToken cancellationToken);
+
+        Task<IReadOnlyCollection<Guid>> ListUserIdsAsync(CancellationToken cancellationToken);
     }
 }
