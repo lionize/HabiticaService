@@ -17,6 +17,10 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
                 .As<ICredentialSettingsStore>()
                 .As<ICredentialSettings>()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<EndpointAddressProvider>()
+                .As<IEndpointAddressProvider>()
+                .SingleInstance();
         }
     }
 }
