@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using IdentityServer4.AccessTokenValidation;
 using MassTransit;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -13,12 +14,12 @@ using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using TIKSN.Data.Mongo;
 using TIKSN.DependencyInjection;
 using TIKSN.Habitica;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
-using TIKSN.Lionize.HabiticaTaskProviderService.Integration;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
 
@@ -68,7 +69,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new BusinessAutofacModule());
             builder.RegisterModule(new DataAutofacModule());
-            builder.RegisterModule(new IntegrationAutofacModule());
 
             builder.RegisterType<DatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
         }
@@ -171,6 +171,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
             services.AddFrameworkPlatform();
             services.AddHabitica();
+            services.AddMediatR(typeof(BusinessAutofacModule).GetTypeInfo().Assembly);
 
             var builder = new ContainerBuilder();
             builder.Populate(services);

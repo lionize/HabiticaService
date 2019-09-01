@@ -1,4 +1,4 @@
-﻿namespace TIKSN.Lionize.HabiticaTaskProviderService.Integration.Events
+﻿namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Integration
 {
     public interface TaskUpserted
     {

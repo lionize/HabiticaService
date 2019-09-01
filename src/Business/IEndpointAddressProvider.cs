@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TIKSN.Lionize.HabiticaTaskProviderService.Integration
+namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
 {
     public interface IEndpointAddressProvider
     {

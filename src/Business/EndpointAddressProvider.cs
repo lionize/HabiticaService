@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 
-namespace TIKSN.Lionize.HabiticaTaskProviderService.Integration
+namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
 {
     public class EndpointAddressProvider : IEndpointAddressProvider
     {
