@@ -43,7 +43,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
                 };
             }
 
-            entity = _mapper.Map(entity, entity);
+            entity = _mapper.Map(request.Data, entity);
 
             await _profileTodoRepository.AddOrUpdateAsync(entity, cancellationToken);
 
