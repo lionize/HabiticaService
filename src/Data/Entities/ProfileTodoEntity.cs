@@ -27,12 +27,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities
 
         public bool? Down { get; set; }
 
-        [BsonId]
-        public Guid ID { get; set; }
-
         public long? EveryX { get; set; }
 
         public string Frequency { get; set; }
+
+        [BsonId]
+        public Guid ID { get; set; }
 
         public bool? IsDue { get; set; }
 
@@ -41,6 +41,8 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities
         public double Priority { get; set; }
 
         public Guid ProviderProfileID { get; set; }
+
+        public Guid ProviderUniformID { get; set; }
 
         public Guid ProviderUserID { get; set; }
 
