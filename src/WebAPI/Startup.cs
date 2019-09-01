@@ -18,7 +18,6 @@ using TIKSN.DependencyInjection;
 using TIKSN.Habitica;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
-using TIKSN.Lionize.HabiticaTaskProviderService.Integration;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
 
@@ -68,7 +67,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new BusinessAutofacModule());
             builder.RegisterModule(new DataAutofacModule());
-            builder.RegisterModule(new IntegrationAutofacModule());
 
             builder.RegisterType<DatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
         }
