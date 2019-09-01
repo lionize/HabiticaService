@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MassTransit;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
     {
         private readonly ILogger<PullTodosBackgroundService> _logger;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
         private readonly IProfileTodoRepository _profileTodoRepository;
         private readonly IServiceProvider _serviceProvider;
         private readonly IUserProfileSettingsRepository _userProfileSettingsRepository;
@@ -31,6 +33,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
             IProfileTodoRepository profileTodoRepository,
             IUserProfileSettingsService userProfileSettingsService,
             IMapper mapper,
+            IMediator mediator,
             ILogger<PullTodosBackgroundService> logger)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
@@ -39,6 +42,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _profileTodoRepository = profileTodoRepository ?? throw new ArgumentNullException(nameof(profileTodoRepository));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
