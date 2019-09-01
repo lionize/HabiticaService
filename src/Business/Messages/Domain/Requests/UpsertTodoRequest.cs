@@ -6,11 +6,15 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
 {
     public class UpsertTodoRequest : IRequest
     {
-        public UpsertTodoRequest(TaskData data)
+        public UpsertTodoRequest(TaskData data, Guid profileID, Guid userID)
         {
             Data = data ?? throw new ArgumentNullException(nameof(data));
+            ProfileID = profileID;
+            UserID = userID;
         }
 
         public TaskData Data { get; }
+        public Guid ProfileID { get; }
+        public Guid UserID { get; }
     }
 }
