@@ -7,12 +7,12 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Habitica.Rest;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Integration;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.Settings;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories;
-using TIKSN.Lionize.HabiticaTaskProviderService.Integration;
-using TIKSN.Lionize.HabiticaTaskProviderService.Integration.Events;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
 {
