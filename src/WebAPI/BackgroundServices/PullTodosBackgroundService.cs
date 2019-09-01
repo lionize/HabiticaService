@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Habitica.Rest;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Requests;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Integration;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.Settings;
@@ -101,6 +102,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
             {
                 foreach (var todo in todos.Data)
                 {
+                    await _mediator.Send(new UpsertTodoRequest(todo, profileID, userID));
                     var entity = new ProfileTodoEntity { ProviderProfileID = profileID, ProviderUserID = userID };
                     entity = _mapper.Map(todo, entity);
 
