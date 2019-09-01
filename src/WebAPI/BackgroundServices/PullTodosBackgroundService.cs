@@ -60,8 +60,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
                 using (var credentialSettings = scope.ServiceProvider.GetRequiredService<ICredentialSettingsStore>())
                 {
                     var habiticaClient = scope.ServiceProvider.GetRequiredService<IHabiticaClient>();
-                    var endpointAddressProvider = scope.ServiceProvider.GetRequiredService<IEndpointAddressProvider>();
-                    var sendEndpoint = await scope.ServiceProvider.GetRequiredService<ISendEndpointProvider>().GetSendEndpoint(endpointAddressProvider.GetEndpointAddress("task_upserted_queue"));
 
                     foreach (var profile in profiles)
                     {
