@@ -11,12 +11,7 @@ models:
         type: string
       - name: HabiticaApiToken
         type: string
-  - name: SettingsGetterResponse
-    fields:
-      - name: Settings
-        type: SettingsGetterItem
-        array: true
-  - name: SettingsGetterItem
+  - name: SettingsGetterResponseItem
     fields:
       - name: ID
         type: string
