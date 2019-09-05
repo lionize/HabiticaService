@@ -9,7 +9,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
     {
         public WebApiMappingProfile()
         {
-            CreateMap<UserProfileSettingsRetrievalModel, SettingsGetterItem>();
+            CreateMap<UserProfileSettingsRetrievalModel, SettingsGetterResponseItem>();
             CreateMap<SettingsSetterRequest, UserProfileSettingsUpdateModel>();
 
             CreateMap<Habitica.Models.TaskData, ProfileTodoEntity>()
