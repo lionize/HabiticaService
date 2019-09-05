@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business.IdentityGenerator;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories;
 
@@ -12,11 +14,13 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
     {
         private readonly IMapper _mapper;
         private readonly IUserProfileSettingsRepository _userProfileSettingsRepository;
+        private readonly IIdentityGenerator<BigInteger> _identityGenerator;
 
-        public UserProfileSettingsService(IMapper mapper, IUserProfileSettingsRepository userProfileSettingsRepository)
+        public UserProfileSettingsService(IMapper mapper, IUserProfileSettingsRepository userProfileSettingsRepository, IIdentityGenerator<BigInteger> identityGenerator)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userProfileSettingsRepository = userProfileSettingsRepository ?? throw new ArgumentNullException(nameof(userProfileSettingsRepository));
+            _identityGenerator = identityGenerator ?? throw new ArgumentNullException(nameof(identityGenerator));
         }
 
         public async Task CreateAsync(Guid userId, UserProfileSettingsUpdateModel model, CancellationToken cancellationToken)
@@ -24,12 +28,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
             var entity = _mapper.Map<UserProfileSettingsEntity>(model);
 
             entity.UserID = userId;
-            entity.ID = Guid.NewGuid();
+            entity.ID = _identityGenerator.Generate();
 
             await _userProfileSettingsRepository.AddAsync(entity, cancellationToken);
         }
 
-        public async Task<UserProfileSettingsCredentialModel> GetCredentialAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<UserProfileSettingsCredentialModel> GetCredentialAsync(BigInteger id, CancellationToken cancellationToken)
         {
             var entity = await _userProfileSettingsRepository.GetAsync(id, cancellationToken);
 
@@ -43,7 +47,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
             return _mapper.Map<UserProfileSettingsRetrievalModel[]>(entities);
         }
 
-        public async Task UpdateAsync(Guid id, Guid curentUserId, UserProfileSettingsUpdateModel updateModel, CancellationToken cancellationToken)
+        public async Task UpdateAsync(BigInteger id, Guid curentUserId, UserProfileSettingsUpdateModel updateModel, CancellationToken cancellationToken)
         {
             var entity = await _userProfileSettingsRepository.GetAsync(id, cancellationToken);
 
