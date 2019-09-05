@@ -5,6 +5,13 @@ Task Publish -Depends Pack {
         $remoteTag = ("docker.io/" + $localTag)
         Exec { docker tag $localTag $remoteTag }
         Exec { docker push $remoteTag }
+
+        try {
+            Exec { keybase chat send --nonblock --private lionize "BUILD: Published $remoteTag" }
+        }
+        catch {
+            Write-Warning "Failed to send notification"
+        }
     }
 }
 
