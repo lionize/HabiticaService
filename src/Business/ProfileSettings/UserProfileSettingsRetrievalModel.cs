@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Numerics;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
 {
@@ -6,6 +6,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
     {
         public string HabiticaUserID { get; set; }
 
-        public Guid ID { get; set; }
+        public BigInteger ID { get; set; }
     }
 }
