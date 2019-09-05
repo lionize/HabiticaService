@@ -1,5 +1,9 @@
 ﻿using Autofac;
+using MathNet.Numerics.Random;
+using System;
+using System.Numerics;
 using TIKSN.Habitica.Settings;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business.IdentityGenerator;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.Settings;
 
@@ -20,6 +24,14 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
 
             builder.RegisterType<EndpointAddressProvider>()
                 .As<IEndpointAddressProvider>()
+                .SingleInstance();
+
+            builder.RegisterType<CryptoRandomSource>()
+                .As<Random>()
+                .SingleInstance();
+
+            builder.RegisterType<UnsignedBigIntegerIdentityGenerator>()
+                .As<IIdentityGenerator<BigInteger>>()
                 .SingleInstance();
         }
     }
