@@ -7,7 +7,7 @@ Task Publish -Depends Pack {
         Exec { docker push $remoteTag }
 
         try {
-            Exec { keybase chat send --nonblock --exploding-lifetime "30s" --private lionize "BUILD: Published $remoteTag" }
+            Exec { keybase chat send --nonblock --private lionize "BUILD: Published $remoteTag" }
         }
         catch {
             Write-Warning "Failed to send notification"
