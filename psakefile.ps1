@@ -16,7 +16,6 @@ Task Publish -Depends Pack {
 }
 
 Task Pack -Depends Build, EstimateVersions {
-    $src = (Resolve-Path ".\src\").Path
     $tagsArguments = @()
     foreach ($VersionTag in $VersionTags) {
         $tagsArguments += "-t"
