@@ -19,6 +19,7 @@ using TIKSN.Data.Mongo;
 using TIKSN.DependencyInjection;
 using TIKSN.Habitica;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business.IdentityGenerator;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
@@ -105,6 +106,11 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
             services.AddAuthorization(options =>
             {
+            });
+
+            services.Configure<UnsignedBigIntegerIdentityGeneratorOptions>(options =>
+            {
+                options.ByteLength = 16;
             });
 
             services.AddMassTransit(x =>
