@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Data.Mongo;
@@ -8,7 +9,7 @@ using TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories
 {
-    public class UserProfileSettingsRepository : MongoRepository<UserProfileSettingsEntity, Guid>, IUserProfileSettingsRepository
+    public class UserProfileSettingsRepository : MongoRepository<UserProfileSettingsEntity, BigInteger>, IUserProfileSettingsRepository
     {
         public UserProfileSettingsRepository(IMongoDatabaseProvider mongoDatabaseProvider) : base(mongoDatabaseProvider, "UserProfileSettings")
         {
