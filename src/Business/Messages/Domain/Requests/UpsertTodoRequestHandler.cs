@@ -2,9 +2,12 @@
 using MassTransit;
 using MediatR;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using TIKSN.Habitica.Models;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.IdentityGenerator;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Integration;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities;
@@ -15,10 +18,10 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
     public class UpsertTodoRequestHandler : IRequestHandler<UpsertTodoRequest>
     {
         private readonly IEndpointAddressProvider _endpointAddressProvider;
+        private readonly IIdentityGenerator<BigInteger> _identityGenerator;
         private readonly IMapper _mapper;
         private readonly IProfileTodoRepository _profileTodoRepository;
         private readonly ISendEndpointProvider _sendEndpointProvider;
-        private readonly IIdentityGenerator<BigInteger> _identityGenerator;
 
         public UpsertTodoRequestHandler(
             IProfileTodoRepository profileTodoRepository,
@@ -44,11 +47,15 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
                 {
                     ProviderUniformID = _identityGenerator.Generate(),
                     ProviderProfileID = request.ProfileID,
-                    ProviderUserID = request.UserID
+                    ProviderUserID = request.UserID,
+                    Checklist = new List<ProfileTodoEntity.ChecklistItemModel>()
                 };
             }
+            var oldChecklist = entity.Checklist.ToArray();
 
             entity = _mapper.Map(request.Data, entity);
+
+            SyncSubtasks(request.Data.Checklist, entity, oldChecklist);
 
             await _profileTodoRepository.AddOrUpdateAsync(entity, cancellationToken);
 
@@ -61,6 +68,26 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
             });
 
             return Unit.Value;
+        }
+
+        private void SyncSubtasks(List<ChecklistItem> checklist, ProfileTodoEntity entity, ProfileTodoEntity.ChecklistItemModel[] oldChecklist)
+        {
+            entity.Checklist.RemoveAll(item => !checklist.Any(x => x.Id == item.Id));
+
+            foreach (var checklistItem in checklist)
+            {
+                var oldChecklistItem = oldChecklist.SingleOrDefault(x => x.Id == checklistItem.Id);
+                var newChecklistItem = entity.Checklist.Single(x => x.Id == checklistItem.Id);
+
+                if (oldChecklistItem == null)
+                {
+                    newChecklistItem.ProviderUniformID = _identityGenerator.Generate();
+                }
+                else
+                {
+                    newChecklistItem.ProviderUniformID = oldChecklistItem.ProviderUniformID;
+                }
+            }
         }
     }
 }
