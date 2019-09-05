@@ -1,9 +1,14 @@
-﻿namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Integration
+﻿using System;
+
+namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Integration
 {
     public interface TaskUpserted
     {
         bool Completed { get; }
-
-        string Text { get; }
+        DateTimeOffset CreatedAt { get; }
+        string Description { get; }
+        Guid ID { get; }
+        Subtask[] Subtasks { get; }
+        string Title { get; }
     }
 }
