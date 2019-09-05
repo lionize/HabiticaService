@@ -77,7 +77,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities
         public class ChecklistItemModel
         {
             public bool Completed { get; set; }
+
             public Guid Id { get; set; }
+
+            [BsonSerializer(typeof(BigIntegerSerializer))]
+            public BigInteger ProviderUniformID { get; set; }
+
             public string Text { get; set; }
         }
 
