@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Habitica.Rest;
@@ -82,7 +83,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
             await Task.Delay(TimeSpan.FromHours(1)); //TODO: Get From Configuration
         }
 
-        private async Task PullUserTodosAsync(IHabiticaClient habiticaClient, Guid profileID, Guid userID, CancellationToken cancellationToken)
+        private async Task PullUserTodosAsync(IHabiticaClient habiticaClient, BigInteger profileID, Guid userID, CancellationToken cancellationToken)
         {
             var todos = await habiticaClient.GetUserToDosAsync(cancellationToken);
             var completedTodos = await habiticaClient.GetUserCompletedToDosAsync(cancellationToken);
@@ -91,7 +92,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices
             await UpdateRecordsAsync(profileID, userID, completedTodos, cancellationToken);
         }
 
-        private async Task UpdateRecordsAsync(Guid profileID, Guid userID, Habitica.Models.UserTaskModel todos, CancellationToken cancellationToken)
+        private async Task UpdateRecordsAsync(BigInteger profileID, Guid userID, Habitica.Models.UserTaskModel todos, CancellationToken cancellationToken)
         {
             if (todos.Success)
             {

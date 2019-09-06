@@ -1,7 +1,9 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using TIKSN.Data;
+using TIKSN.Lionize.HabiticaTaskProviderService.Data.Serializers;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities
 {
@@ -40,9 +42,11 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities
 
         public double Priority { get; set; }
 
-        public Guid ProviderProfileID { get; set; }
+        [BsonSerializer(typeof(BigIntegerSerializer))]
+        public BigInteger ProviderProfileID { get; set; }
 
-        public Guid ProviderUniformID { get; set; }
+        [BsonSerializer(typeof(BigIntegerSerializer))]
+        public BigInteger ProviderUniformID { get; set; }
 
         public Guid ProviderUserID { get; set; }
 
@@ -73,7 +77,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities
         public class ChecklistItemModel
         {
             public bool Completed { get; set; }
+
             public Guid Id { get; set; }
+
+            [BsonSerializer(typeof(BigIntegerSerializer))]
+            public BigInteger ProviderUniformID { get; set; }
+
             public string Text { get; set; }
         }
 

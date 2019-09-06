@@ -3,6 +3,7 @@ using Lionize.HabiticaTaskProvider.ApiModels.V1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings;
@@ -25,15 +26,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Controllers.V1
         }
 
         [HttpGet]
-        public async Task<SettingsGetterResponse> Get(CancellationToken cancellationToken)
+        public async Task<SettingsGetterResponseItem[]> Get(CancellationToken cancellationToken)
         {
             var userId = Guid.Parse(User.FindFirst("sub").Value);
             var models = await _userProfileSettingsService.ListAsync(userId, cancellationToken);
 
-            return new SettingsGetterResponse
-            {
-                Settings = _mapper.Map<SettingsGetterItem[]>(models)
-            };
+            return _mapper.Map<SettingsGetterResponseItem[]>(models);
         }
 
         [HttpPost]
@@ -47,13 +45,14 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Controllers.V1
         }
 
         [HttpPut("{id}")]
-        public async Task Put(Guid id, [FromBody] SettingsSetterRequest request, CancellationToken cancellationToken)
+        public async Task Put(string id, [FromBody] SettingsSetterRequest request, CancellationToken cancellationToken)
         {
             var userId = Guid.Parse(User.FindFirst("sub").Value);
+            var profileId = BigInteger.Parse(id);
 
             var model = _mapper.Map<UserProfileSettingsUpdateModel>(request);
 
-            await _userProfileSettingsService.UpdateAsync(id, userId, model, cancellationToken);
+            await _userProfileSettingsService.UpdateAsync(profileId, userId, model, cancellationToken);
         }
     }
 }
