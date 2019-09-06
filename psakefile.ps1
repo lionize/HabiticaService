@@ -17,12 +17,12 @@ Task Publish -Depends Pack {
 
 Task Pack -Depends Build, EstimateVersions {
     $tagsArguments = @()
-    foreach ($VersionTag in $VersionTags) {
+    foreach ($VersionTag in $script:VersionTags) {
         $tagsArguments += "-t"
         $tagsArguments += ($script:imageName + ":" + $VersionTag)
     }
 
-    Exec { docker build -f Dockerfile $src $tagsArguments }
+    Exec { docker build -f Dockerfile .\src\ $tagsArguments }
 }
 
 Task EstimateVersions {
