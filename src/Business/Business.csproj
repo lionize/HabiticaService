@@ -10,7 +10,7 @@
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="MassTransit" Version="5.5.5" />
     <PackageReference Include="MediatR" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="3.0.0" />
     <PackageReference Include="TIKSN-Framework" Version="3.2.0-alpha.13" />
     <PackageReference Include="TIKSN-Habitica" Version="1.0.0-alpha.8" />
     <PackageReference Include="MathNet.Numerics" Version="4.8.1" />
