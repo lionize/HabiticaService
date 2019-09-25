@@ -10,8 +10,9 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
     public class Program
     {
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseSerilog((context, configuration) =>
                 {
@@ -23,6 +24,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
                         .Enrich.FromLogContext()
                         .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate);
                 });
+        }
 
         public static async Task Main(string[] args)
         {
