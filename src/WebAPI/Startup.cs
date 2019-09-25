@@ -23,6 +23,7 @@ using TIKSN.Lionize.HabiticaTaskProviderService.Business.IdentityGenerator;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
+using TIKSN.Lionize.Messaging;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
@@ -70,6 +71,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new BusinessAutofacModule());
             builder.RegisterModule(new DataAutofacModule());
+            builder.RegisterModule(new MessagingAutofacModule());
 
             builder.RegisterType<DatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
         }
