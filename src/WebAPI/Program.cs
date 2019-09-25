@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
+using System.Threading.Tasks;
+using TIKSN.Lionize.Messaging.Services;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
@@ -22,9 +24,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
                         .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate);
                 });
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var webHost = CreateWebHostBuilder(args).Build();
+            var publisherInitializerService = webHost.Services.GetRequiredService<IPublisherInitializerService>();
+            await publisherInitializerService.InitializeAsync(default).ConfigureAwait(false);
+            await webHost.RunAsync(default).ConfigureAwait(false);
         }
     }
 }
