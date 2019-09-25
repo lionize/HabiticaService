@@ -77,7 +77,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddApiVersioning();
             services.AddVersionedApiExplorer();
