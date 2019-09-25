@@ -2,7 +2,6 @@
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using IdentityServer4.AccessTokenValidation;
-using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -113,16 +112,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             services.Configure<UnsignedBigIntegerIdentityGeneratorOptions>(options =>
             {
                 options.ByteLength = 16;
-            });
-
-            services.AddMassTransit(x =>
-            {
-                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
-                {
-                    var host = cfg.Host(new Uri(Configuration.GetConnectionString("RabbitMQ")), hostConfigurator =>
-                    {
-                    });
-                }));
             });
 
             services.AddSwaggerGen(c =>
