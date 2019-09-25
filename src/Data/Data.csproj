@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>TIKSN.Lionize.HabiticaTaskProviderService.Data</AssemblyName>
     <RootNamespace>TIKSN.Lionize.HabiticaTaskProviderService.Data</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TIKSN-Framework" Version="3.2.0-alpha.13" />
+    <PackageReference Include="TIKSN-Framework" Version="3.2.0-alpha.19" />
   </ItemGroup>
 
 </Project>
