@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>TIKSN.Lionize.HabiticaTaskProviderService.Business</RootNamespace>
     <AssemblyName>TIKSN.Lionize.HabiticaTaskProviderService.Business</AssemblyName>
   </PropertyGroup>
@@ -11,9 +11,10 @@
     <PackageReference Include="MassTransit" Version="5.5.5" />
     <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="3.0.0" />
-    <PackageReference Include="TIKSN-Framework" Version="3.2.0-alpha.13" />
+    <PackageReference Include="TIKSN-Framework" Version="3.2.0-alpha.19" />
     <PackageReference Include="TIKSN-Habitica" Version="1.0.0-alpha.8" />
     <PackageReference Include="MathNet.Numerics" Version="4.8.1" />
+    <PackageReference Include="TIKSN.Lionize.Messaging" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
