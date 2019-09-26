@@ -52,7 +52,9 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
             var entity = await _userProfileSettingsRepository.GetAsync(id, cancellationToken);
 
             if (entity.UserID != curentUserId)
+            {
                 throw new InvalidOperationException("User can't update other user's records");
+            }
 
             entity = _mapper.Map(updateModel, entity);
 

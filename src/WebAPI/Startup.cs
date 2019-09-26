@@ -2,7 +2,6 @@
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using IdentityServer4.AccessTokenValidation;
-using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -23,6 +22,7 @@ using TIKSN.Lionize.HabiticaTaskProviderService.Business.IdentityGenerator;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
+using TIKSN.Lionize.Messaging;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
@@ -70,13 +70,14 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             builder.RegisterModule(new CoreModule());
             builder.RegisterModule(new BusinessAutofacModule());
             builder.RegisterModule(new DataAutofacModule());
+            builder.RegisterModule(new MessagingAutofacModule());
 
             builder.RegisterType<DatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddApiVersioning();
             services.AddVersionedApiExplorer();
@@ -111,16 +112,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             services.Configure<UnsignedBigIntegerIdentityGeneratorOptions>(options =>
             {
                 options.ByteLength = 16;
-            });
-
-            services.AddMassTransit(x =>
-            {
-                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
-                {
-                    var host = cfg.Host(new Uri(Configuration.GetConnectionString("RabbitMQ")), hostConfigurator =>
-                    {
-                    });
-                }));
             });
 
             services.AddSwaggerGen(c =>

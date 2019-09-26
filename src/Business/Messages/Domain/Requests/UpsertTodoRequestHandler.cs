@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MassTransit;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,33 +7,38 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Habitica.Models;
+using TIKSN.Integration.Correlation;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.IdentityGenerator;
-using TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Integration;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Entities;
 using TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories;
+using TIKSN.Lionize.Messaging.Services;
+using TIKSN.Time;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Requests
 {
     public class UpsertTodoRequestHandler : IRequestHandler<UpsertTodoRequest>
     {
-        private readonly IEndpointAddressProvider _endpointAddressProvider;
         private readonly IIdentityGenerator<BigInteger> _identityGenerator;
         private readonly IMapper _mapper;
         private readonly IProfileTodoRepository _profileTodoRepository;
-        private readonly ISendEndpointProvider _sendEndpointProvider;
+        private readonly IPublisherService _publisherService;
+        private readonly ITimeProvider _timeProvider;
+        private readonly ICorrelationService _correlationService;
 
         public UpsertTodoRequestHandler(
             IProfileTodoRepository profileTodoRepository,
-            ISendEndpointProvider sendEndpointProvider,
-            IEndpointAddressProvider endpointAddressProvider,
             IIdentityGenerator<BigInteger> identityGenerator,
+            IPublisherService publisherService,
+            ITimeProvider timeProvider,
+            ICorrelationService correlationService,
             IMapper mapper)
         {
             _profileTodoRepository = profileTodoRepository ?? throw new ArgumentNullException(nameof(profileTodoRepository));
-            _sendEndpointProvider = sendEndpointProvider ?? throw new ArgumentNullException(nameof(sendEndpointProvider));
-            _endpointAddressProvider = endpointAddressProvider ?? throw new ArgumentNullException(nameof(endpointAddressProvider));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _identityGenerator = identityGenerator ?? throw new ArgumentNullException(nameof(identityGenerator));
+            _publisherService = publisherService ?? throw new ArgumentNullException(nameof(publisherService));
+            _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+            _correlationService = correlationService ?? throw new ArgumentNullException(nameof(correlationService));
         }
 
         public async Task<Unit> Handle(UpsertTodoRequest request, CancellationToken cancellationToken)
@@ -57,15 +61,22 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
 
             SyncSubtasks(request.Data.Checklist, entity, oldChecklist);
 
-            await _profileTodoRepository.AddOrUpdateAsync(entity, cancellationToken);
+            await _profileTodoRepository.AddOrUpdateAsync(entity, cancellationToken).ConfigureAwait(false);
 
-            var sendEndpoint = await _sendEndpointProvider.GetSendEndpoint(_endpointAddressProvider.GetEndpointAddress("task_upserted_queue"));
-
-            await sendEndpoint.Send<TaskUpserted>(new
+            await _publisherService.ProduceAsync(new global::Lionize.IntegrationMessages.TaskUpserted
             {
                 Completed = entity.Completed.GetValueOrDefault(false),
-                entity.Text
-            });
+                CreatedAt = new global::Lionize.IntegrationMessages.Moment
+                {
+                    Value = _timeProvider.GetCurrentTime().ToUnixTimeSeconds()
+                },
+                Description = entity.Notes,
+                ID = new global::Lionize.IntegrationMessages.BigInteger
+                {
+                    Value = entity.ProviderUniformID.ToByteArray()
+                },
+                Title = entity.Text
+            }, _correlationService.Generate(), cancellationToken).ConfigureAwait(false);
 
             return Unit.Value;
         }

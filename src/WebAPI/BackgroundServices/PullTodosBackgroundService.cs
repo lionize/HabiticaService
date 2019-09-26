@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MassTransit;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
