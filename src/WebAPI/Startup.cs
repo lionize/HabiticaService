@@ -62,7 +62,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             app.UseAuthentication();
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+
+            app.UseEndpoints(opt =>
+            {
+                opt.MapControllers();
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
