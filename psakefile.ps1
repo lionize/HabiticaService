@@ -51,7 +51,7 @@ Task Build -Depends TranspileModels {
     New-Item -Path $script:publishFolder -ItemType Directory | Out-Null
     $project = Resolve-Path ".\src\WebAPI\WebAPI.csproj"
     $project = $project.Path
-    Exec { dotnet publish $project --output $script:publishFolder }
+    Exec { dotnet publish $project --configuration Release --output $script:publishFolder }
 }
 
 Task TranspileModels -Depends Init, Clean {
