@@ -23,6 +23,7 @@ using TIKSN.Lionize.HabiticaTaskProviderService.Data;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.BackgroundServices;
 using TIKSN.Lionize.HabiticaTaskProviderService.WebAPI.Options;
 using TIKSN.Lionize.Messaging;
+using TIKSN.Lionize.Messaging.Options;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
@@ -62,7 +63,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             app.UseAuthentication();
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+
+            app.UseEndpoints(opt =>
+            {
+                opt.MapControllers();
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -160,6 +166,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
                         cpbuilder.WithOrigins(origins);
                     }
                 });
+            });
+
+            services.Configure<ApplicationOptions>(opt =>
+            {
+                opt.ApplictionId = "HabiticaTaskProviderService";
+                opt.ApplictionQueuePart = "habitica";
             });
 
             services.AddSingleton(Configuration);

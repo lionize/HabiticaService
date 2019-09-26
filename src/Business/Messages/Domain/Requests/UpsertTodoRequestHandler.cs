@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
         private readonly IPublisherService _publisherService;
         private readonly ITimeProvider _timeProvider;
         private readonly ICorrelationService _correlationService;
+        private readonly ILogger<UpsertTodoRequestHandler> _logger;
 
         public UpsertTodoRequestHandler(
             IProfileTodoRepository profileTodoRepository,
@@ -31,6 +34,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
             IPublisherService publisherService,
             ITimeProvider timeProvider,
             ICorrelationService correlationService,
+            ILogger<UpsertTodoRequestHandler> logger,
             IMapper mapper)
         {
             _profileTodoRepository = profileTodoRepository ?? throw new ArgumentNullException(nameof(profileTodoRepository));
@@ -39,6 +43,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
             _publisherService = publisherService ?? throw new ArgumentNullException(nameof(publisherService));
             _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
             _correlationService = correlationService ?? throw new ArgumentNullException(nameof(correlationService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<Unit> Handle(UpsertTodoRequest request, CancellationToken cancellationToken)
@@ -61,22 +66,31 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
 
             SyncSubtasks(request.Data.Checklist, entity, oldChecklist);
 
-            await _profileTodoRepository.AddOrUpdateAsync(entity, cancellationToken).ConfigureAwait(false);
-
-            await _publisherService.ProduceAsync(new global::Lionize.IntegrationMessages.TaskUpserted
+            var correlationId = _correlationService.Generate();
+            using (_logger.BeginScope(new Dictionary<string, string> { { nameof(CorrelationID), correlationId } }))
             {
-                Completed = entity.Completed.GetValueOrDefault(false),
-                CreatedAt = new global::Lionize.IntegrationMessages.Moment
+                await _profileTodoRepository.AddOrUpdateAsync(entity, cancellationToken).ConfigureAwait(false);
+
+                var message = new global::Lionize.IntegrationMessages.TaskUpserted
                 {
-                    Value = _timeProvider.GetCurrentTime().ToUnixTimeSeconds()
-                },
-                Description = entity.Notes,
-                ID = new global::Lionize.IntegrationMessages.BigInteger
-                {
-                    Value = entity.ProviderUniformID.ToByteArray()
-                },
-                Title = entity.Text
-            }, _correlationService.Generate(), cancellationToken).ConfigureAwait(false);
+                    ID = new global::Lionize.IntegrationMessages.BigInteger
+                    {
+                        Value = entity.ProviderUniformID.ToByteArray()
+                    },
+                    UserID = entity.UserId,
+                    Completed = entity.Completed.GetValueOrDefault(false),
+                    CreatedAt = new global::Lionize.IntegrationMessages.Moment
+                    {
+                        Value = _timeProvider.GetCurrentTime().ToUnixTimeSeconds()
+                    },
+                    Description = entity.Notes,
+                    Title = entity.Text
+                };
+
+                _logger.LogInformation($"Publishing message {Environment.NewLine}{JsonConvert.SerializeObject(message, Formatting.Indented)}");
+
+                await _publisherService.ProduceAsync(message, correlationId, cancellationToken).ConfigureAwait(false);
+            }
 
             return Unit.Value;
         }
