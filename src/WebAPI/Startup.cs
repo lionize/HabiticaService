@@ -61,6 +61,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             app.UseCors(AllowSpecificCorsOrigins);
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseHttpsRedirection();
             app.UseRouting();
