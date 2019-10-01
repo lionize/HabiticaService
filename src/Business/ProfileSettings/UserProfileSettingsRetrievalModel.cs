@@ -7,5 +7,9 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
         public string HabiticaUserID { get; set; }
 
         public BigInteger ID { get; set; }
+
+        public string FullName { get; }
+
+        public string Username { get; }
     }
 }
