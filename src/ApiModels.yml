@@ -17,4 +17,8 @@ models:
         type: string
       - name: HabiticaUserID
         type: string
+      - name: FullName
+        type: string
+      - name: Username
+        type: string
 ...
