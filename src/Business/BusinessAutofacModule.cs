@@ -23,10 +23,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
                 .As<ICredentialSettings>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<EndpointAddressProvider>()
-                .As<IEndpointAddressProvider>()
-                .SingleInstance();
-
             builder.RegisterType<CryptoRandomSource>()
                 .As<Random>()
                 .SingleInstance();
