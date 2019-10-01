@@ -75,6 +75,8 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
 
             entity = _mapper.Map(updateModel, entity);
 
+            await _habiticaProfileService.GetAsync(updateModel.HabiticaUserID, updateModel.HabiticaApiToken, cancellationToken);
+
             await _userProfileSettingsRepository.UpdateAsync(entity, cancellationToken);
         }
     }
