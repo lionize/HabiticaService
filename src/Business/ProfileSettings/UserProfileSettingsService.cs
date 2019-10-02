@@ -59,6 +59,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
                 var profile = await _habiticaProfileService.GetAsync(credential.HabiticaUserID, credential.HabiticaApiToken, cancellationToken);
                 var result = _mapper.Map<UserProfileSettingsRetrievalModel>(entity);
                 result = _mapper.Map(profile, result);
+                results.Add(result);
             }
 
             return results;
