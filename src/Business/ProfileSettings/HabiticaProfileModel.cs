@@ -2,8 +2,8 @@
 {
     public class HabiticaProfileModel
     {
-        public string FullName { get; }
+        public string FullName { get; set; }
 
-        public string Username { get; }
+        public string Username { get; set; }
     }
 }
