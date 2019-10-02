@@ -1,0 +1,9 @@
+import "bond/core/bond.bond"
+
+namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Models
+
+struct HabiticaProfileModel
+{
+    0: string FullName;
+    1: string Username;
+}
