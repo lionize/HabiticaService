@@ -23,10 +23,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
                 .As<ICredentialSettings>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<EndpointAddressProvider>()
-                .As<IEndpointAddressProvider>()
-                .SingleInstance();
-
             builder.RegisterType<CryptoRandomSource>()
                 .As<Random>()
                 .SingleInstance();
@@ -37,6 +33,14 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
 
             builder.RegisterType<UnsignedBigIntegerBinaryDeserializer>()
                 .SingleInstance();
+
+            builder
+                .RegisterType<HabiticaProfileService>()
+                .As<IHabiticaProfileService>()
+                .InstancePerLifetimeScope();
+
+            builder
+                .RegisterDecorator<HabiticaProfileCacheService, IHabiticaProfileService>();
         }
     }
 }

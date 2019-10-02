@@ -177,6 +177,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
             services.AddSingleton(Configuration);
 
+            services.AddDistributedRedisCache(opt =>
+            {
+                opt.Configuration = Configuration.GetConnectionString("Redis");
+                opt.InstanceName = "HabiticaTaskProviderService";
+            });
+
             services.AddHostedService<PullTodosBackgroundService>();
 
             services.AddFrameworkPlatform();
