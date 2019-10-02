@@ -22,7 +22,7 @@ Task Pack -Depends Build, EstimateVersions {
         $tagsArguments += ($script:imageName + ":" + $VersionTag)
     }
 
-    Exec { docker build -f Dockerfile .\src\ $tagsArguments }
+    Exec { docker build -f Dockerfile $script:publishFolder $tagsArguments }
 }
 
 Task EstimateVersions {
@@ -51,7 +51,7 @@ Task Build -Depends TranspileModels {
     New-Item -Path $script:publishFolder -ItemType Directory | Out-Null
     $project = Resolve-Path ".\src\WebAPI\WebAPI.csproj"
     $project = $project.Path
-    Exec { dotnet publish $project --configuration Release --runtime linux-x64 --output $script:publishFolder }
+    Exec { dotnet publish $project --configuration Release --output $script:publishFolder }
 }
 
 Task TranspileModels -Depends Init, Clean {
