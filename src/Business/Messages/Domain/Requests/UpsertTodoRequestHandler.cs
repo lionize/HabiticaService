@@ -77,7 +77,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.Messages.Domain.Req
                     {
                         Value = entity.ProviderUniformID.ToByteArray()
                     },
-                    UserID = entity.UserId,
+                    UserID = entity.ProviderUserID,
                     Completed = entity.Completed.GetValueOrDefault(false),
                     CreatedAt = new global::Lionize.IntegrationMessages.Moment
                     {
