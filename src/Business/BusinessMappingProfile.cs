@@ -22,7 +22,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business
                 .ForMember(dest => dest.ID, opt => opt.Ignore())
                 .ForMember(dest => dest.UserID, opt => opt.Ignore());
 
-            CreateMap<HabiticaProfileModel, UserProfileSettingsRetrievalModel>();
+            CreateMap<HabiticaProfileModel, UserProfileSettingsRetrievalModel>(MemberList.Source);
         }
     }
 }
