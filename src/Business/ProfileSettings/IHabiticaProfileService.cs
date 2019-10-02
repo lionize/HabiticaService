@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business.Models;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
 {
