@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using TIKSN.Habitica.Rest;
+using TIKSN.Lionize.HabiticaTaskProviderService.Business.Models;
 using TIKSN.Lionize.HabiticaTaskProviderService.Business.Settings;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
