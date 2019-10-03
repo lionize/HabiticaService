@@ -22,7 +22,7 @@ Task Pack -Depends Build, EstimateVersions {
         $tagsArguments += ($script:imageName + ":" + $VersionTag)
     }
 
-    Exec { docker build -f Dockerfile .\src\ $tagsArguments }
+    Exec { docker build -f Dockerfile $script:publishFolder $tagsArguments }
 }
 
 Task EstimateVersions {
