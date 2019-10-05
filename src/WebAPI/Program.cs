@@ -5,8 +5,6 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Threading.Tasks;
-using TIKSN.DependencyInjection;
-using TIKSN.Habitica;
 using TIKSN.Lionize.Messaging.Services;
 
 namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
@@ -16,11 +14,6 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
         public static IHostBuilder CreateWebHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                .ConfigureServices(services =>
-                {
-                    services.AddFrameworkPlatform();
-                    services.AddHabitica();
-                })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
