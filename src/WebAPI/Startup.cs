@@ -185,6 +185,9 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             services.AddHostedService<PullTodosBackgroundService>();
 
             services.AddMediatR(typeof(BusinessAutofacModule).GetTypeInfo().Assembly);
+
+            services.AddFrameworkPlatform();
+            services.AddHabitica();
         }
     }
 }
