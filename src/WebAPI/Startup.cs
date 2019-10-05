@@ -6,7 +6,6 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -58,10 +57,10 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
                 c.SwaggerEndpoint("/swagger/1.0/swagger.json", "API 1.0");
             });
 
-            app.UseCors(AllowSpecificCorsOrigins);
-
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseCors(AllowSpecificCorsOrigins);
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -82,9 +81,9 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             builder.RegisterType<DatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
         }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddControllers();
 
             services.AddApiVersioning();
             services.AddVersionedApiExplorer();
@@ -185,15 +184,10 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
             services.AddHostedService<PullTodosBackgroundService>();
 
-            services.AddFrameworkPlatform();
-            services.AddHabitica();
             services.AddMediatR(typeof(BusinessAutofacModule).GetTypeInfo().Assembly);
 
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
-            ConfigureContainer(builder);
-
-            return new AutofacServiceProvider(builder.Build());
+            services.AddFrameworkPlatform();
+            services.AddHabitica();
         }
     }
 }

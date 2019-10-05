@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore;
+﻿using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Threading.Tasks;
@@ -10,19 +11,24 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 {
     public class Program
     {
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        public static IHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseSerilog((context, configuration) =>
+            return Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    configuration
-                        .MinimumLevel.Debug()
-                        //.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                        //.MinimumLevel.Override("System", LogEventLevel.Warning)
-                        //.MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate);
+                    webBuilder
+                        .UseStartup<Startup>()
+                        .UseSerilog((context, configuration) =>
+                        {
+                            configuration
+                                .MinimumLevel.Debug()
+                                //.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                                //.MinimumLevel.Override("System", LogEventLevel.Warning)
+                                //.MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                                .Enrich.FromLogContext()
+                                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate);
+                        });
                 });
         }
 
