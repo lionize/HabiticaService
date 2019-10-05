@@ -81,7 +81,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
             builder.RegisterType<DatabaseProvider>().As<IMongoDatabaseProvider>().SingleInstance();
         }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
@@ -184,15 +184,7 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
             services.AddHostedService<PullTodosBackgroundService>();
 
-            services.AddFrameworkPlatform();
-            services.AddHabitica();
             services.AddMediatR(typeof(BusinessAutofacModule).GetTypeInfo().Assembly);
-
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
-            ConfigureContainer(builder);
-
-            return new AutofacServiceProvider(builder.Build());
         }
     }
 }
