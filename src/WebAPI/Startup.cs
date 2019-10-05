@@ -57,10 +57,10 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
                 c.SwaggerEndpoint("/swagger/1.0/swagger.json", "API 1.0");
             });
 
-            app.UseCors(AllowSpecificCorsOrigins);
-
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseCors(AllowSpecificCorsOrigins);
 
             app.UseAuthentication();
             app.UseAuthorization();
