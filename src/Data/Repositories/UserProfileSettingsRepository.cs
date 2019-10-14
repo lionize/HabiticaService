@@ -15,6 +15,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Data.Repositories
         {
         }
 
+        public async Task<bool> ExistsHabiticaUserIdAsync(string habiticaUserID, CancellationToken cancellationToken)
+        {
+            var cursor = await collection.FindAsync(Builders<UserProfileSettingsEntity>.Filter.Eq(item => item.HabiticaUserID, habiticaUserID), options: null, cancellationToken);
+            return await cursor.AnyAsync(cancellationToken);
+        }
+
         public async Task<IReadOnlyCollection<UserProfileSettingsEntity>> ListAsync(Guid userId, CancellationToken cancellationToken)
         {
             var cursor = await collection.FindAsync(Builders<UserProfileSettingsEntity>.Filter.Eq(item => item.UserID, userId), options: null, cancellationToken);
