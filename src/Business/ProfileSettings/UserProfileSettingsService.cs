@@ -12,10 +12,10 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
 {
     public class UserProfileSettingsService : IUserProfileSettingsService
     {
+        private readonly IHabiticaProfileService _habiticaProfileService;
+        private readonly IIdentityGenerator<BigInteger> _identityGenerator;
         private readonly IMapper _mapper;
         private readonly IUserProfileSettingsRepository _userProfileSettingsRepository;
-        private readonly IIdentityGenerator<BigInteger> _identityGenerator;
-        private readonly IHabiticaProfileService _habiticaProfileService;
 
         public UserProfileSettingsService(
             IMapper mapper,
@@ -37,6 +37,8 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
             entity.ID = _identityGenerator.Generate();
 
             await _habiticaProfileService.GetAsync(model.HabiticaUserID, model.HabiticaApiToken, cancellationToken);
+
+            await EnsureUniquenessAsync(model.HabiticaUserID, cancellationToken);
 
             await _userProfileSettingsRepository.AddAsync(entity, cancellationToken);
         }
@@ -79,7 +81,17 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
 
             await _habiticaProfileService.GetAsync(updateModel.HabiticaUserID, updateModel.HabiticaApiToken, cancellationToken);
 
+            await EnsureUniquenessAsync(updateModel.HabiticaUserID, cancellationToken);
+
             await _userProfileSettingsRepository.UpdateAsync(entity, cancellationToken);
+        }
+
+        private async Task EnsureUniquenessAsync(string habiticaUserID, CancellationToken cancellationToken)
+        {
+            if (await _userProfileSettingsRepository.ExistsHabiticaUserIdAsync(habiticaUserID, cancellationToken))
+            {
+                throw new InvalidOperationException($"Habitica UserID '{habiticaUserID}' already exists.");
+            }
         }
     }
 }
