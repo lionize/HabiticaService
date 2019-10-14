@@ -86,9 +86,12 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.Business.ProfileSettings
             await _userProfileSettingsRepository.UpdateAsync(entity, cancellationToken);
         }
 
-        private Task EnsureUniquenessAsync(string habiticaUserID, CancellationToken cancellationToken)
+        private async Task EnsureUniquenessAsync(string habiticaUserID, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (await _userProfileSettingsRepository.ExistsHabiticaUserIdAsync(habiticaUserID, cancellationToken))
+            {
+                throw new InvalidOperationException($"Habitica UserID '{habiticaUserID}' already exists.");
+            }
         }
     }
 }
