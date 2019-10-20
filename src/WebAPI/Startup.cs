@@ -83,7 +83,11 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.PropertyNamingPolicy = null;
+                opt.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            });
 
             services.AddApiVersioning();
             services.AddVersionedApiExplorer();
