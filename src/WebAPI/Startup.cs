@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using IdentityServer4.AccessTokenValidation;
 using MediatR;
@@ -10,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TIKSN.Data.Mongo;
@@ -89,8 +87,16 @@ namespace TIKSN.Lionize.HabiticaTaskProviderService.WebAPI
                 opt.JsonSerializerOptions.DictionaryKeyPolicy = null;
             });
 
-            services.AddApiVersioning();
-            services.AddVersionedApiExplorer();
+            services.AddApiVersioning(o =>
+            {
+                o.AssumeDefaultVersionWhenUnspecified = false;
+                o.ReportApiVersions = true;
+            });
+            services.AddVersionedApiExplorer(o =>
+            {
+                o.AssumeDefaultVersionWhenUnspecified = false;
+                o.SubstituteApiVersionInUrl = true;
+            });
 
             var servicesConfigurationSection = Configuration.GetSection("Services");
             services.Configure<ServiceDiscoveryOptions>(servicesConfigurationSection);
