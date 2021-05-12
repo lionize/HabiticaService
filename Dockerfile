@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.14
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.15
 WORKDIR /app
 COPY ./ ./
 
